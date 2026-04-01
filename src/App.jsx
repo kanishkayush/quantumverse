@@ -11,6 +11,8 @@ import KnowledgePanel from './components/ui/KnowledgePanel';
 import HUD from './components/ui/HUD';
 import CircuitBuilder from './components/ui/CircuitBuilder';
 import AlgorithmVisualizer from './components/ui/AlgorithmVisualizer';
+import QuantumCoinToss from './components/ui/QuantumCoinToss';
+import QuantumPasswordGen from './components/ui/QuantumPasswordGen';
 import { quantumConcepts } from './utils/mockData';
 import sfx from './utils/soundEngine';
 
@@ -47,6 +49,8 @@ const App = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [showCircuitBuilder, setShowCircuitBuilder] = useState(false);
   const [showAlgorithm, setShowAlgorithm] = useState(false);
+  const [showCoinToss, setShowCoinToss] = useState(false);
+  const [showPasswordGen, setShowPasswordGen] = useState(false);
   const selectedConcept = selectedId ? quantumConcepts[selectedId] : null;
 
   const handleSelect = useCallback((id) => {
@@ -97,6 +101,8 @@ const App = () => {
         onSelect={handleSelect}
         onOpenCircuitBuilder={() => setShowCircuitBuilder(true)}
         onOpenAlgorithm={() => setShowAlgorithm(true)}
+        onOpenCoinToss={() => setShowCoinToss(true)}
+        onOpenPasswordGen={() => setShowPasswordGen(true)}
       />
 
       {/* ── Knowledge panel (slides in from right) ── */}
@@ -121,6 +127,20 @@ const App = () => {
       <AnimatePresence>
         {showAlgorithm && (
           <AlgorithmVisualizer onClose={() => setShowAlgorithm(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* ── Quantum Coin Toss modal ────────────────── */}
+      <AnimatePresence>
+        {showCoinToss && (
+          <QuantumCoinToss onClose={() => setShowCoinToss(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* ── Quantum Password Generator modal ────────── */}
+      <AnimatePresence>
+        {showPasswordGen && (
+          <QuantumPasswordGen onClose={() => setShowPasswordGen(false)} />
         )}
       </AnimatePresence>
     </div>

@@ -4,11 +4,11 @@
 // ============================================================
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, ChevronRight, Wrench, GitBranch } from 'lucide-react';
+import { Cpu, ChevronRight, Wrench, GitBranch, Coins, KeyRound } from 'lucide-react';
 import { hudItems } from '../../utils/mockData';
 import sfx from '../../utils/soundEngine';
 
-const HUD = ({ selectedId, onSelect, onOpenCircuitBuilder, onOpenAlgorithm }) => {
+const HUD = ({ selectedId, onSelect, onOpenCircuitBuilder, onOpenAlgorithm, onOpenCoinToss, onOpenPasswordGen }) => {
   return (
     <>
       {/* ── Top-left branding ─────────────────────────── */}
@@ -171,6 +171,46 @@ const HUD = ({ selectedId, onSelect, onOpenCircuitBuilder, onOpenAlgorithm }) =>
           <GitBranch size={12} style={{ color: '#a78bfa' }} />
           <span className="text-xs font-medium" style={{ fontFamily: 'Inter', color: '#a78bfa' }}>
             Algorithms
+          </span>
+        </motion.button>
+
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.3 }}
+          onClick={() => { sfx.panelOpen(); onOpenCoinToss?.(); }}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-200"
+          style={{
+            background: 'rgba(251, 191, 36, 0.06)',
+            border: '1px solid rgba(251, 191, 36, 0.15)',
+            backdropFilter: 'blur(8px)',
+            cursor: 'pointer',
+            minWidth: '130px',
+          }}
+        >
+          <Coins size={12} style={{ color: '#fbbf24' }} />
+          <span className="text-xs font-medium" style={{ fontFamily: 'Inter', color: '#fbbf24' }}>
+            Coin Toss
+          </span>
+        </motion.button>
+
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.4 }}
+          onClick={() => { sfx.panelOpen(); onOpenPasswordGen?.(); }}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-200"
+          style={{
+            background: 'rgba(52, 211, 153, 0.06)',
+            border: '1px solid rgba(52, 211, 153, 0.15)',
+            backdropFilter: 'blur(8px)',
+            cursor: 'pointer',
+            minWidth: '130px',
+          }}
+        >
+          <KeyRound size={12} style={{ color: '#34d399' }} />
+          <span className="text-xs font-medium" style={{ fontFamily: 'Inter', color: '#34d399' }}>
+            Password Gen
           </span>
         </motion.button>
       </motion.div>
