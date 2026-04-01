@@ -9,7 +9,10 @@ import { AnimatePresence } from 'framer-motion';
 import QuantumScene from './scenes/QuantumScene';
 import KnowledgePanel from './components/ui/KnowledgePanel';
 import HUD from './components/ui/HUD';
+import CircuitBuilder from './components/ui/CircuitBuilder';
+import AlgorithmVisualizer from './components/ui/AlgorithmVisualizer';
 import { quantumConcepts } from './utils/mockData';
+import sfx from './utils/soundEngine';
 
 // ── Error boundary to catch 3D rendering errors ──────────
 class SceneErrorBoundary extends Component {
@@ -42,13 +45,19 @@ class SceneErrorBoundary extends Component {
 // ── Main App ──────────────────────────────────────────────
 const App = () => {
   const [selectedId, setSelectedId] = useState(null);
+  const [showCircuitBuilder, setShowCircuitBuilder] = useState(false);
+  const [showAlgorithm, setShowAlgorithm] = useState(false);
   const selectedConcept = selectedId ? quantumConcepts[selectedId] : null;
 
   const handleSelect = useCallback((id) => {
+    sfx.click();
     setSelectedId((prev) => (prev === id ? null : id));
   }, []);
 
-  const handleClose = useCallback(() => setSelectedId(null), []);
+  const handleClose = useCallback(() => {
+    sfx.panelClose();
+    setSelectedId(null);
+  }, []);
 
   return (
     <div style={{ position: 'relative', width: '100vw', height: '100vh', overflow: 'hidden', background: '#020817' }}>
@@ -83,7 +92,12 @@ const App = () => {
       </Canvas>
 
       {/* ── HUD / UI overlay ─────────────────────── */}
-      <HUD selectedId={selectedId} onSelect={handleSelect} />
+      <HUD
+        selectedId={selectedId}
+        onSelect={handleSelect}
+        onOpenCircuitBuilder={() => setShowCircuitBuilder(true)}
+        onOpenAlgorithm={() => setShowAlgorithm(true)}
+      />
 
       {/* ── Knowledge panel (slides in from right) ── */}
       <AnimatePresence mode="wait">
@@ -95,9 +109,24 @@ const App = () => {
           />
         )}
       </AnimatePresence>
+
+      {/* ── Circuit Builder modal ──────────────────── */}
+      <AnimatePresence>
+        {showCircuitBuilder && (
+          <CircuitBuilder onClose={() => setShowCircuitBuilder(false)} />
+        )}
+      </AnimatePresence>
+
+      {/* ── Algorithm Visualizer modal ─────────────── */}
+      <AnimatePresence>
+        {showAlgorithm && (
+          <AlgorithmVisualizer onClose={() => setShowAlgorithm(false)} />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
 export default App;
+
 

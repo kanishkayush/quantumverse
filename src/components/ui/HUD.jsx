@@ -4,10 +4,11 @@
 // ============================================================
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Cpu, ChevronRight } from 'lucide-react';
+import { Cpu, ChevronRight, Wrench, GitBranch } from 'lucide-react';
 import { hudItems } from '../../utils/mockData';
+import sfx from '../../utils/soundEngine';
 
-const HUD = ({ selectedId, onSelect }) => {
+const HUD = ({ selectedId, onSelect, onOpenCircuitBuilder, onOpenAlgorithm }) => {
   return (
     <>
       {/* ── Top-left branding ─────────────────────────── */}
@@ -91,7 +92,7 @@ const HUD = ({ selectedId, onSelect }) => {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 + i * 0.07 }}
-              onClick={() => onSelect(item.id)}
+              onClick={() => { sfx.navigate(); onSelect(item.id); }}
               className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-200"
               style={{
                 background: isSelected
@@ -128,6 +129,50 @@ const HUD = ({ selectedId, onSelect }) => {
             </motion.button>
           );
         })}
+
+        {/* Separator */}
+        <div style={{ height: '1px', background: 'rgba(255,255,255,0.06)', margin: '4px 0' }} />
+
+        {/* Tool buttons */}
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.1 }}
+          onClick={() => { sfx.panelOpen(); onOpenCircuitBuilder?.(); }}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-200"
+          style={{
+            background: 'rgba(0, 245, 255, 0.06)',
+            border: '1px solid rgba(0, 245, 255, 0.15)',
+            backdropFilter: 'blur(8px)',
+            cursor: 'pointer',
+            minWidth: '130px',
+          }}
+        >
+          <Wrench size={12} style={{ color: '#00f5ff' }} />
+          <span className="text-xs font-medium" style={{ fontFamily: 'Inter', color: '#00f5ff' }}>
+            Circuit Builder
+          </span>
+        </motion.button>
+
+        <motion.button
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 1.2 }}
+          onClick={() => { sfx.panelOpen(); onOpenAlgorithm?.(); }}
+          className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-left transition-all duration-200"
+          style={{
+            background: 'rgba(167, 139, 250, 0.06)',
+            border: '1px solid rgba(167, 139, 250, 0.15)',
+            backdropFilter: 'blur(8px)',
+            cursor: 'pointer',
+            minWidth: '130px',
+          }}
+        >
+          <GitBranch size={12} style={{ color: '#a78bfa' }} />
+          <span className="text-xs font-medium" style={{ fontFamily: 'Inter', color: '#a78bfa' }}>
+            Algorithms
+          </span>
+        </motion.button>
       </motion.div>
 
       {/* ── Quantum stats strip (top-right) ───────────── */}
